@@ -14,16 +14,21 @@ html(lang="jp")
         button(type="submit") 投稿
     h2 投稿一覧
     each post in posts
+      // 管理人の投稿だけ ID を「管理人 ★」と表示する機能
       - var isPostedByAdmin = (post.postedBy === 'admin')
       if isPostedByAdmin
         h3 #{post.id} : 管理人 ★
       else
         h3 #{post.id} : ID:#{post.trackingCookie}
-      p #{post.content}
+      // 投稿内容
+      p!= post.content
+      //p #{post.content}
       p 投稿日時: #{post.createdAt}
+      // 管理人だけが、投稿したアカウントのユーザー名を表示できる機能
       - var isAdmin = (user === 'admin')
       if isAdmin
         p 投稿者: #{post.postedBy}
+      // 投稿したユーザーと管理人が、投稿を削除できるボタンを表示する機能
       - var isDeletable = (user === post.postedBy || isAdmin)
       if isDeletable
         form(method="post", action="/posts?delete=1")
